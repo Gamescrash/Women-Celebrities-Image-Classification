@@ -1,3 +1,7 @@
 PyWavelets
 opencv-python
 seaborn
+scikit-learn
+pandas
+numpy
+joblib
