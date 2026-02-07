@@ -52,6 +52,9 @@ def load_saved_artifacts():
 def class_number_to_name(class_num):
     return __class_number_to_name[class_num]
 
+def get_class_dictionary():
+    return __class_name_to_number
+
 def get_cv2_image_from_base64_string(b64str):
     encoded_data = b64str.split(',')[1]
     nparr = np.frombuffer(base64.b64decode(encoded_data), np.uint8)
@@ -94,4 +97,3 @@ if __name__ == '__main__':
     load_saved_artifacts()
     # print(classify_image(get_cv2_image_from_base64_string))
     print(classify_image(None, "../model/dataset/cropped/mia_khalifa/mia_khalifa3.png"))
-

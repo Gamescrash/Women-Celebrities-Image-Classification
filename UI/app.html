@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women Celebrity Classifier</title>
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Women Celebrity Classifier</h1>
+            <div class="server-status" id="serverStatus">
+                <span class="status-indicator"></span>
+                <span class="status-text">Checking server connection...</span>
+            </div>
+        </header>
+
+        <!-- Celebrity Showcase -->
+        <section class="celebrity-showcase">
+            <h2 class="section-title">Available Celebrities</h2>
+            <div class="showcase-grid" id="showcaseGrid">
+                <!-- Will be populated dynamically -->
+            </div>
+        </section>
+
+        <main>
+            <div class="classifier-container">
+                <!-- Upload Section -->
+                <div class="upload-box">
+                    <h3 class="box-title">Upload Image</h3>
+                    <div class="drop-zone" id="dropZone">
+                        <div class="upload-preview" id="uploadPreview" style="display: none;">
+                            <img id="imagePreview" src="" alt="Preview">
+                            <button class="remove-btn" id="removeBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Remove
+                            </button>
+                        </div>
+                        <div class="drop-zone-content" id="dropZoneContent">
+                            <div class="upload-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                            </div>
+                            <p class="upload-text">Drag and drop an image here</p>
+                            <p class="upload-text-or">or</p>
+                            <label for="fileInput" class="file-label">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                <span>Browse Files</span>
+                                <input type="file" id="fileInput" accept="image/*" hidden>
+                            </label>
+                            <p class="file-info">Supported: JPG, PNG, WEBP</p>
+                        </div>
+                    </div>
+                    <button id="classifyBtn" class="classify-btn" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        Classify Image
+                    </button>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-box" id="resultsBox">
+                    <h3 class="box-title">Classification Results</h3>
+                    
+                    <div class="loading-state" id="loadingState" style="display: none;">
+                        <div class="spinner-container">
+                            <div class="spinner"></div>
+                            <div class="spinner-glow"></div>
+                        </div>
+                        <p class="loading-text">Analyzing image...</p>
+                        <p class="loading-subtext">Detecting faces and extracting features</p>
+                    </div>
+
+                    <div class="no-result-state" id="noResultState">
+                        <div class="result-preview-circle empty">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="result-name">Upload an image to begin</h2>
+                        <p class="result-subtitle">The AI will identify the celebrity</p>
+                        <div class="probability-table">
+                            <div class="table-header">
+                                <span>Celebrity</span>
+                                <span>Confidence</span>
+                            </div>
+                            <div class="table-rows empty-rows">
+                                <div class="empty-row"></div>
+                                <div class="empty-row"></div>
+                                <div class="empty-row"></div>
+                                <div class="empty-row"></div>
+                                <div class="empty-row"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-state" id="resultState" style="display: none;">
+                        <div class="result-header">
+                            <div class="result-preview-circle">
+                                <img id="resultImage" src="" alt="Result">
+                            </div>
+                            <div class="result-info">
+                                <div class="result-badge">Match Found</div>
+                                <h2 class="result-name" id="resultName">Celebrity Name</h2>
+                                <p class="result-confidence" id="resultConfidence">0.00% confidence</p>
+                            </div>
+                        </div>
+                        
+                        <div class="probability-table">
+                            <div class="table-header">
+                                <span>Celebrity</span>
+                                <span>Confidence</span>
+                            </div>
+                            <div class="table-rows" id="resultProbabilityRows">
+                                <!-- Will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p>Powered by Machine Learning & OpenCV</p>
+                <p class="footer-tech">Using Wavelet Transform & Face Detection</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
