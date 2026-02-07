@@ -82,6 +82,4 @@ If you retrain the model, copy the new artifacts into the API folder:
 - `model/class_dictionary.json` → `server/artifacts/class_dictionary.json`
 
 ## Notes
-- The cropping step recreates `model/dataset/cropped/` and overwrites existing cropped images.
-- If cascade paths are not resolved, verify the working directory or use absolute paths.
-- Ensure you have the rights to use the dataset images; this material is intended for educational purposes only.
+This project was a funny experiment/play around inspired by some Youtube tutorial
